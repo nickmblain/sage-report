@@ -34,14 +34,9 @@ const userInitials = authStore.user?.user_metadata?.full_name
           </svg>
         </button>
 
-        <div class="flex items-center gap-2">
-          <div class="w-8 h-8 bg-sage-600 rounded-lg flex items-center justify-center">
-            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-          </div>
-          <span class="text-xl font-semibold text-charcoal-800">Sage Report</span>
-        </div>
+        <router-link to="/dashboard" class="flex items-center">
+          <img src="/logo.svg" alt="Sage Report" class="h-7" />
+        </router-link>
       </div>
 
       <div class="flex items-center gap-4">
