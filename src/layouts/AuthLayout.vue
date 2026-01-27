@@ -18,6 +18,7 @@
       <div class="relative z-10 p-12 flex flex-col justify-between w-full">
         <div>
           <img src="/logo-white.svg" alt="Sage Report" class="h-8" />
+          <p class="text-white/50 text-xs mt-1">Created by Nick Blain</p>
         </div>
 
         <div>

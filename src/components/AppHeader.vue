@@ -34,8 +34,9 @@ const userInitials = authStore.user?.user_metadata?.full_name
           </svg>
         </button>
 
-        <router-link to="/dashboard" class="flex items-center">
+        <router-link to="/dashboard" class="flex flex-col">
           <img src="/logo.svg" alt="Sage Report" class="h-7" />
+          <span class="text-charcoal-400 text-[10px] leading-tight">Created by Nick Blain</span>
         </router-link>
       </div>
 
