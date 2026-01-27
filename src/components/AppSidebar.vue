@@ -5,6 +5,10 @@ defineProps<{
   open: boolean
 }>()
 
+const emit = defineEmits<{
+  navigate: []
+}>()
+
 const route = useRoute()
 
 const navigation = [
@@ -44,6 +48,7 @@ function isActive(path: string) {
       <router-link
         to="/reports/new"
         class="btn btn-primary w-full gap-2"
+        @click="emit('navigate')"
       >
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -61,6 +66,7 @@ function isActive(path: string) {
         :class="isActive(item.path)
           ? 'bg-sage-50 text-sage-700'
           : 'text-charcoal-600 hover:bg-cream-100'"
+        @click="emit('navigate')"
       >
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="item.icon" />

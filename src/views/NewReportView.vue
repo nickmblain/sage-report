@@ -9,7 +9,7 @@ const reportsStore = useReportsStore()
 
 const studentId = ref('')
 const reportType = ref<'progress' | 'behavioral' | 'academic' | 'iep'>('progress')
-const period = ref('Q1 2024')
+const period = ref('Q1 2026')
 const notes = ref('')
 const strengthsInput = ref('')
 const areasInput = ref('')
@@ -22,7 +22,7 @@ const reportTypes = [
   { value: 'iep', label: 'IEP Progress', description: 'Individualized Education Program goals' },
 ]
 
-const periods = ['Q1 2024', 'Q2 2024', 'Q3 2024', 'Q4 2024', 'Fall 2024', 'Spring 2024', 'Annual 2024']
+const periods = ['Q1 2026', 'Q2 2026', 'Q3 2026', 'Q4 2026', 'Fall 2026', 'Spring 2026', 'Annual 2026']
 
 const selectedStudent = computed(() =>
   reportsStore.students.find(s => s.id === studentId.value)
