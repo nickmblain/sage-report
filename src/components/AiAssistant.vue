@@ -182,27 +182,28 @@ function handleKeydown(e: KeyboardEvent) {
       </div>
     </Transition>
 
-    <!-- Floating Action Button -->
+    <!-- Floating Action Button with Blob -->
     <button
       @click="isOpen = !isOpen"
-      class="group relative w-14 h-14 rounded-full shadow-lg transition-all duration-300"
-      :class="isOpen ? 'bg-charcoal-700 rotate-0' : 'bg-gradient-to-br from-sage-500 to-sage-600 hover:shadow-xl hover:scale-105'"
+      class="group relative w-20 h-20 transition-all duration-300 hover:scale-105"
     >
-      <!-- Animated rings when closed -->
-      <div v-if="!isOpen" class="absolute inset-0 rounded-full">
-        <span class="absolute inset-0 rounded-full bg-sage-400 animate-ping opacity-20"></span>
-        <span class="absolute inset-[-4px] rounded-full border-2 border-sage-300/50 animate-pulse"></span>
-      </div>
-
-      <!-- Sparkle effects -->
-      <div v-if="!isOpen" class="absolute inset-0 overflow-hidden rounded-full">
-        <span class="absolute top-1 right-2 w-1.5 h-1.5 bg-white/60 rounded-full animate-pulse" style="animation-delay: 0s"></span>
-        <span class="absolute bottom-3 left-2 w-1 h-1 bg-white/40 rounded-full animate-pulse" style="animation-delay: 0.5s"></span>
-        <span class="absolute top-4 left-3 w-1 h-1 bg-white/50 rounded-full animate-pulse" style="animation-delay: 1s"></span>
-      </div>
+      <!-- Animated Blob Background -->
+      <svg
+        class="absolute inset-0 w-full h-full drop-shadow-lg"
+        :class="{ 'blob-morph': !isOpen }"
+        viewBox="0 0 200 200"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          :fill="isOpen ? '#4a4a4a' : '#177D83'"
+          class="transition-colors duration-300"
+          d="M43.3,-49.4C58.7,-38.6,75.8,-27.5,76.8,-14.6C77.8,-1.7,62.8,12.9,52.3,29.3C41.8,45.8,35.9,64,23.2,72.5C10.5,81,-9,79.6,-23.7,71.5C-38.4,63.4,-48.3,48.5,-51.8,34C-55.3,19.5,-52.4,5.4,-49.8,-8.8C-47.3,-22.9,-45.2,-37.1,-37,-49.3C-28.7,-61.4,-14.4,-71.4,-0.2,-71.2C13.9,-70.9,27.8,-60.3,43.3,-49.4Z"
+          transform="translate(100 100)"
+        />
+      </svg>
 
       <!-- Icon -->
-      <div class="relative z-10 flex items-center justify-center">
+      <div class="absolute inset-0 flex items-center justify-center z-10">
         <Transition
           enter-active-class="transition-all duration-200"
           enter-from-class="opacity-0 rotate-90 scale-50"
@@ -212,8 +213,8 @@ function handleKeydown(e: KeyboardEvent) {
           leave-to-class="opacity-0 -rotate-90 scale-50"
           mode="out-in"
         >
-          <svg v-if="isOpen" class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          <svg v-if="isOpen" class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
           </svg>
           <svg v-else class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
@@ -245,5 +246,25 @@ function handleKeydown(e: KeyboardEvent) {
 
 .animate-bounce {
   animation: bounce 0.6s infinite;
+}
+
+/* Blob morphing animation */
+@keyframes blob-morph {
+  0%, 100% {
+    d: path("M43.3,-49.4C58.7,-38.6,75.8,-27.5,76.8,-14.6C77.8,-1.7,62.8,12.9,52.3,29.3C41.8,45.8,35.9,64,23.2,72.5C10.5,81,-9,79.6,-23.7,71.5C-38.4,63.4,-48.3,48.5,-51.8,34C-55.3,19.5,-52.4,5.4,-49.8,-8.8C-47.3,-22.9,-45.2,-37.1,-37,-49.3C-28.7,-61.4,-14.4,-71.4,-0.2,-71.2C13.9,-70.9,27.8,-60.3,43.3,-49.4Z");
+  }
+  25% {
+    d: path("M39.5,-47.7C52.9,-36.5,66.6,-26.2,71.6,-12.3C76.6,1.6,72.9,19.2,63.6,32.6C54.3,46,39.4,55.2,23.7,60.8C8,66.4,-8.5,68.4,-23.2,63.4C-37.9,58.4,-50.8,46.4,-58.2,31.8C-65.6,17.2,-67.5,0,-63.5,-14.8C-59.5,-29.6,-49.6,-42,-37.3,-53.4C-25,-64.8,-10.3,-75.2,1.9,-77.5C14.1,-79.8,26.1,-58.9,39.5,-47.7Z");
+  }
+  50% {
+    d: path("M44.7,-52.5C57.4,-42.9,66.5,-28.5,69.3,-13C72.1,2.5,68.6,19.1,60.1,32.8C51.6,46.5,38.1,57.3,22.8,63.1C7.5,68.9,-9.6,69.7,-25.2,64.1C-40.8,58.5,-54.9,46.5,-62.1,31.4C-69.3,16.3,-69.6,-1.9,-64.4,-18.1C-59.2,-34.3,-48.5,-48.5,-35.4,-58C-22.3,-67.5,-6.8,-72.3,5.6,-78.8C18,-85.3,32,-62.1,44.7,-52.5Z");
+  }
+  75% {
+    d: path("M41.9,-49.2C54.1,-39.5,63.7,-26.3,67.7,-11.2C71.7,3.9,70.1,20.9,62,34.2C53.9,47.5,39.3,57.1,23.5,62.2C7.7,67.3,-9.3,67.9,-24.7,62.7C-40.1,57.5,-53.9,46.5,-61.4,32.3C-68.9,18.1,-70.1,0.7,-66.1,-15.4C-62.1,-31.5,-52.9,-46.3,-40.5,-55.9C-28.1,-65.5,-12.5,-69.9,1.3,-71.5C15.1,-73.1,29.7,-58.9,41.9,-49.2Z");
+  }
+}
+
+.blob-morph path {
+  animation: blob-morph 10s ease-in-out infinite;
 }
 </style>

@@ -48,7 +48,7 @@ const userName = computed(() =>
 const stats = computed(() => [
   { label: 'Total Students', value: reportsStore.students.length, icon: 'M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z', color: 'sage', change: '+2 this week' },
   { label: 'Reports Generated', value: reportsStore.reports.length, icon: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z', color: 'charcoal', change: '+5 this month' },
-  { label: 'Pending Review', value: reportsStore.reportsByStatus.generated + reportsStore.reportsByStatus.draft, icon: 'M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z', color: 'tan', change: 'Needs attention' },
+  { label: 'Pending Review', value: reportsStore.reportsByStatus.generated + reportsStore.reportsByStatus.draft, icon: 'M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z', color: 'tan', change: 'Needs attention', link: '/reports' },
   { label: 'Sent to Parents', value: reportsStore.reportsByStatus.sent, icon: 'M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z', color: 'sage', change: '100% delivery' },
 ])
 
@@ -181,20 +181,32 @@ const statusChartOptions = {
   }
 }
 
-const gradeChartData = computed(() => ({
-  labels: ['4th Grade', '5th Grade'],
+// Time saved calculations (cheeky edition)
+const MINUTES_PER_REPORT_TRADITIONAL = 45 // "Back in my day..."
+const MINUTES_PER_REPORT_SAGE = 2 // Quick review and send
+
+const timeSavedData = computed(() => {
+  const reportCount = reportsStore.reports.length || 3
+  const traditionalTime = reportCount * MINUTES_PER_REPORT_TRADITIONAL
+  const sageTime = reportCount * MINUTES_PER_REPORT_SAGE
+  return { traditionalTime, sageTime, reportCount }
+})
+
+const timeSavedChartData = computed(() => ({
+  labels: ['The Old Way', 'With Sage'],
   datasets: [
     {
-      label: 'Students',
-      data: [2, 3],
-      backgroundColor: ['#9cd4d7', '#177d83'],
+      label: 'Minutes',
+      data: [timeSavedData.value.traditionalTime, timeSavedData.value.sageTime],
+      backgroundColor: ['#c2c2c2', '#177d83'],
       borderRadius: 8,
       borderSkipped: false,
     }
   ]
 }))
 
-const gradeChartOptions = {
+const timeSavedChartOptions = {
+  indexAxis: 'y' as const,
   responsive: true,
   maintainAspectRatio: false,
   plugins: {
@@ -205,27 +217,40 @@ const gradeChartOptions = {
       bodyFont: { family: 'Instrument Sans' },
       padding: 12,
       cornerRadius: 8,
+      callbacks: {
+        label: (context: any) => `${context.raw} minutes`
+      }
     }
   },
   scales: {
     x: {
-      grid: { display: false },
-      ticks: {
-        font: { family: 'Instrument Sans', size: 12 },
-        color: '#858585'
-      }
-    },
-    y: {
       beginAtZero: true,
       grid: { color: '#f5f5f5' },
       ticks: {
-        font: { family: 'Instrument Sans', size: 12 },
+        font: { family: 'Instrument Sans', size: 11 },
         color: '#858585',
-        stepSize: 1
+        callback: (value: string | number) => `${value}m`
+      }
+    },
+    y: {
+      grid: { display: false },
+      ticks: {
+        font: { family: 'Instrument Sans', size: 12 },
+        color: '#4a4a4a'
       }
     }
   }
 }
+
+const totalTimeSaved = computed(() => {
+  const minutes = timeSavedData.value.traditionalTime - timeSavedData.value.sageTime
+  if (minutes >= 60) {
+    const hours = Math.floor(minutes / 60)
+    const mins = minutes % 60
+    return mins > 0 ? `${hours}h ${mins}m` : `${hours}h`
+  }
+  return `${minutes}m`
+})
 
 function getStatusColor(status: string) {
   const colors: Record<string, string> = {
@@ -288,7 +313,17 @@ function formatDate(date: string) {
         <div>
           <p class="text-2xl font-bold text-charcoal-800">{{ stat.value }}</p>
           <p class="text-sm text-charcoal-500">{{ stat.label }}</p>
-          <p class="text-xs text-sage-600 mt-0.5">{{ stat.change }}</p>
+          <router-link
+            v-if="stat.link"
+            :to="stat.link"
+            class="text-xs text-tan-dark hover:text-sage-600 mt-0.5 inline-flex items-center gap-1 font-medium"
+          >
+            {{ stat.change }}
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </router-link>
+          <p v-else class="text-xs text-sage-600 mt-0.5">{{ stat.change }}</p>
         </div>
       </div>
     </div>
@@ -369,13 +404,24 @@ function formatDate(date: string) {
 
       <!-- Right Column -->
       <div class="space-y-6">
-        <!-- Grade Distribution -->
+        <!-- Time Saved -->
         <div class="card">
-          <h2 class="text-lg font-semibold text-charcoal-800 mb-2">Students by Grade</h2>
-          <p class="text-sm text-charcoal-500 mb-4">Class distribution</p>
-          <div class="h-40">
-            <Bar :data="gradeChartData" :options="gradeChartOptions" />
+          <div class="flex items-start justify-between mb-2">
+            <h2 class="text-lg font-semibold text-charcoal-800">Time Saved</h2>
+            <span class="inline-flex items-center gap-1 px-2 py-1 bg-sage-100 text-sage-700 rounded-full text-xs font-medium">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+              {{ totalTimeSaved }}
+            </span>
           </div>
+          <p class="text-sm text-charcoal-500 mb-4">Based on {{ timeSavedData.reportCount }} reports</p>
+          <div class="h-28">
+            <Bar :data="timeSavedChartData" :options="timeSavedChartOptions" />
+          </div>
+          <p class="text-xs text-charcoal-400 mt-3 italic text-center">
+            That's {{ timeSavedData.reportCount }} coffee breaks you didn't miss
+          </p>
         </div>
 
         <!-- Quick Actions -->
