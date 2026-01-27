@@ -56,8 +56,8 @@ export const useAuthStore = defineStore('auth', () => {
   function demoSignIn() {
     user.value = {
       id: 'demo-user-id',
-      email: 'demo@sagereport.com',
-      user_metadata: { full_name: 'Demo User' },
+      email: '',
+      user_metadata: { full_name: 'Nicolas Paton' },
       app_metadata: {},
       aud: 'authenticated',
       created_at: new Date().toISOString()

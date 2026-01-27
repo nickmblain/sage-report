@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import { useReportsStore } from '@/stores/reports'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
@@ -52,24 +52,52 @@ const stats = computed(() => [
   { label: 'Sent to Parents', value: reportsStore.reportsByStatus.sent, icon: 'M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z', color: 'sage', change: '100% delivery' },
 ])
 
+// Chart time period
+const activityPeriod = ref('week')
+
+const activityChartConfigs = {
+  week: {
+    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+    data: [2, 4, 3, 5, 4, 1, 2],
+    subtitle: 'Reports generated this week'
+  },
+  month: {
+    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+    data: [12, 18, 15, 21],
+    subtitle: 'Reports generated this month'
+  },
+  quarter: {
+    labels: ['Jan', 'Feb', 'Mar'],
+    data: [45, 52, 66],
+    subtitle: 'Reports generated this quarter'
+  }
+}
+
+const activitySubtitle = computed(() =>
+  activityChartConfigs[activityPeriod.value as keyof typeof activityChartConfigs].subtitle
+)
+
 // Chart data
-const activityChartData = computed(() => ({
-  labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-  datasets: [
-    {
-      label: 'Reports Generated',
-      data: [2, 4, 3, 5, 4, 1, 2],
-      borderColor: '#177d83',
-      backgroundColor: 'rgba(23, 125, 131, 0.1)',
-      fill: true,
-      tension: 0.4,
-      pointBackgroundColor: '#177d83',
-      pointBorderColor: '#fff',
-      pointBorderWidth: 2,
-      pointRadius: 4,
-    }
-  ]
-}))
+const activityChartData = computed(() => {
+  const config = activityChartConfigs[activityPeriod.value as keyof typeof activityChartConfigs]
+  return {
+    labels: config.labels,
+    datasets: [
+      {
+        label: 'Reports Generated',
+        data: config.data,
+        borderColor: '#177d83',
+        backgroundColor: 'rgba(23, 125, 131, 0.1)',
+        fill: true,
+        tension: 0.4,
+        pointBackgroundColor: '#177d83',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        pointRadius: 4,
+      }
+    ]
+  }
+})
 
 const activityChartOptions = {
   responsive: true,
@@ -272,12 +300,15 @@ function formatDate(date: string) {
         <div class="flex items-center justify-between mb-6">
           <div>
             <h2 class="text-lg font-semibold text-charcoal-800">Report Activity</h2>
-            <p class="text-sm text-charcoal-500">Reports generated this week</p>
+            <p class="text-sm text-charcoal-500">{{ activitySubtitle }}</p>
           </div>
-          <select class="text-sm border border-charcoal-200 rounded-lg px-3 py-1.5 text-charcoal-600 bg-white">
-            <option>This Week</option>
-            <option>This Month</option>
-            <option>This Quarter</option>
+          <select
+            v-model="activityPeriod"
+            class="text-sm border border-charcoal-200 rounded-lg px-3 py-1.5 text-charcoal-600 bg-white cursor-pointer"
+          >
+            <option value="week">This Week</option>
+            <option value="month">This Month</option>
+            <option value="quarter">This Quarter</option>
           </select>
         </div>
         <div class="h-64">
