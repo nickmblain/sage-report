@@ -1,15 +1,31 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+
+const mouseX = ref(0)
+const mouseY = ref(0)
+
+function handleMouseMove(e: MouseEvent) {
+  const target = e.currentTarget as HTMLElement
+  const rect = target.getBoundingClientRect()
+  // Calculate mouse position as percentage from center (-0.5 to 0.5)
+  mouseX.value = (e.clientX - rect.left) / rect.width - 0.5
+  mouseY.value = (e.clientY - rect.top) / rect.height - 0.5
+}
 </script>
 
 <template>
-  <div class="min-h-screen bg-cream-50 flex">
+  <div
+    class="min-h-screen bg-cream-50 flex"
+    @mousemove="handleMouseMove"
+  >
     <!-- Left side - Branding with hero image -->
     <div class="hidden lg:flex lg:w-1/2 relative overflow-hidden">
-      <!-- Background image -->
+      <!-- Background image with parallax -->
       <img
         src="https://sagereport.com/_astro/hero-2.BmkUhyJ0_pL7CK.avif"
         alt=""
-        class="absolute inset-0 w-full h-full object-cover"
+        class="absolute inset-0 w-full h-full object-cover scale-110 transition-transform duration-300 ease-out"
+        :style="{ transform: `scale(1.1) translate(${mouseX * -20}px, ${mouseY * -20}px)` }"
       />
       <!-- Gradient overlay -->
       <div class="absolute inset-0 bg-gradient-to-br from-sage-800/90 via-sage-700/85 to-sage-600/80"></div>
