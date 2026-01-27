@@ -10,23 +10,47 @@
   body {
     @apply bg-cream-100 text-charcoal-800;
   }
+
+  h1, h2, h3, h4 {
+    @apply font-serif font-medium text-charcoal-700;
+  }
+
+  h1 {
+    @apply text-4xl md:text-5xl mb-6;
+  }
+
+  h2 {
+    @apply text-3xl md:text-4xl mb-4;
+  }
+
+  h3 {
+    @apply text-2xl md:text-3xl mb-3;
+  }
+
+  h4 {
+    @apply text-xl md:text-2xl mb-2;
+  }
 }
 
 @layer components {
   .btn {
-    @apply px-6 py-3 rounded-lg font-medium transition-all duration-200 inline-flex items-center justify-center;
+    @apply inline-flex items-center justify-center px-8 py-4 font-medium rounded-full transition-colors text-lg;
   }
 
   .btn-primary {
-    @apply bg-sage-600 text-white hover:bg-sage-700 active:bg-sage-800;
+    @apply bg-sage-500 text-white hover:bg-sage-600;
   }
 
   .btn-secondary {
-    @apply bg-cream-200 text-sage-600 border border-sage-300 hover:bg-tan-lighter;
+    @apply bg-cream-200 text-sage-600 hover:bg-tan-lighter;
   }
 
   .btn-outline {
-    @apply bg-transparent border-2 border-sage-600 text-sage-600 hover:bg-sage-600 hover:text-white;
+    @apply bg-transparent border-2 border-sage-500 text-sage-500 hover:bg-sage-500 hover:text-white;
+  }
+
+  .btn-sm {
+    @apply px-6 py-3 text-base;
   }
 
   .input {
