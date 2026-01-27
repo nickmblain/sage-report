@@ -84,7 +84,7 @@ function handleKeydown(e: KeyboardEvent) {
     >
       <div
         v-if="isOpen"
-        class="absolute bottom-20 right-0 w-96 bg-white rounded-2xl shadow-2xl border border-charcoal-100 overflow-hidden"
+        class="absolute bottom-20 right-0 w-96 max-h-[calc(100vh-120px)] bg-white rounded-2xl shadow-2xl border border-charcoal-100 overflow-hidden flex flex-col"
       >
         <!-- Header -->
         <div class="bg-gradient-to-r from-sage-600 to-sage-500 p-4">
@@ -113,7 +113,7 @@ function handleKeydown(e: KeyboardEvent) {
         </div>
 
         <!-- Messages -->
-        <div ref="messagesContainer" class="h-80 overflow-y-auto p-4 space-y-4 bg-cream-50">
+        <div ref="messagesContainer" class="flex-1 min-h-0 overflow-y-auto p-4 space-y-4 bg-cream-50">
           <div
             v-for="(message, index) in messages"
             :key="index"
