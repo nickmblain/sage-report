@@ -2,6 +2,7 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import AppHeader from '@/components/AppHeader.vue'
 import AppSidebar from '@/components/AppSidebar.vue'
+import AiAssistant from '@/components/AiAssistant.vue'
 
 const sidebarOpen = ref(true)
 const isMobile = ref(false)
@@ -57,5 +58,8 @@ function closeSidebar() {
         </div>
       </main>
     </div>
+
+    <!-- AI Assistant -->
+    <AiAssistant />
   </div>
 </template>
