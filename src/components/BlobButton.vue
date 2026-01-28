@@ -189,47 +189,47 @@ const emit = defineEmits<{
 
 .blob-btn__blob {
   position: absolute;
-  top: 2px;
-  width: 25%;
+  top: 0;
+  width: 34%;
   height: 100%;
   border-radius: 100%;
-  transform: translate3d(0, 150%, 0) scale(1.7);
+  transform: translate3d(0, 150%, 0) scale(1.9);
   transition: transform 0.45s ease;
 }
 
 @supports (filter: url('#goo')) {
   .blob-btn__blob {
-    transform: translate3d(0, 150%, 0) scale(1.4);
+    transform: translate3d(0, 150%, 0) scale(1.7);
   }
 }
 
 .blob-btn__blob:nth-child(1) {
-  left: 0%;
+  left: -5%;
   transition-delay: 0s;
 }
 
 .blob-btn__blob:nth-child(2) {
-  left: 30%;
+  left: 22%;
   transition-delay: 0.08s;
 }
 
 .blob-btn__blob:nth-child(3) {
-  left: 60%;
+  left: 50%;
   transition-delay: 0.16s;
 }
 
 .blob-btn__blob:nth-child(4) {
-  left: 90%;
+  left: 78%;
   transition-delay: 0.24s;
 }
 
 .blob-btn:hover .blob-btn__blob {
-  transform: translateZ(0) scale(1.7);
+  transform: translateZ(0) scale(1.9);
 }
 
 @supports (filter: url('#goo')) {
   .blob-btn:hover .blob-btn__blob {
-    transform: translateZ(0) scale(1.4);
+    transform: translateZ(0) scale(1.7);
   }
 }
 
