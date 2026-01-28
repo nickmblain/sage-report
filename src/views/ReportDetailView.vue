@@ -3,6 +3,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useReportsStore } from '@/stores/reports'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
+import BlobButton from '@/components/BlobButton.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -115,26 +116,27 @@ function copyToClipboard() {
           </div>
 
           <div class="flex items-center gap-2">
-            <button
+            <BlobButton
               v-if="!editing"
               @click="copyToClipboard"
-              class="btn btn-secondary gap-2"
+              variant="secondary"
+              size="sm"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
               </svg>
               Copy
-            </button>
-            <button
+            </BlobButton>
+            <BlobButton
               v-if="!editing"
               @click="startEditing"
-              class="btn btn-primary gap-2"
+              size="sm"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
               </svg>
               Edit
-            </button>
+            </BlobButton>
           </div>
         </div>
       </div>
@@ -147,12 +149,12 @@ function copyToClipboard() {
             class="input min-h-[400px] font-mono text-sm"
           ></textarea>
           <div class="flex items-center justify-end gap-3 mt-4 pt-4 border-t border-charcoal-100">
-            <button @click="cancelEditing" class="btn btn-secondary">
+            <BlobButton @click="cancelEditing" variant="secondary" size="sm">
               Cancel
-            </button>
-            <button @click="saveChanges" :disabled="saving" class="btn btn-primary">
+            </BlobButton>
+            <BlobButton @click="saveChanges" :disabled="saving" size="sm">
               {{ saving ? 'Saving...' : 'Save Changes' }}
-            </button>
+            </BlobButton>
           </div>
         </div>
 
@@ -166,27 +168,28 @@ function copyToClipboard() {
         <h3 class="font-medium text-charcoal-800 mb-4">Report Actions</h3>
 
         <div class="flex flex-wrap gap-3">
-          <button
+          <BlobButton
             v-if="report.status !== 'reviewed'"
             @click="updateStatus('reviewed')"
-            class="btn btn-secondary gap-2"
+            variant="secondary"
+            size="sm"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
             </svg>
             Mark as Reviewed
-          </button>
+          </BlobButton>
 
-          <button
+          <BlobButton
             v-if="report.status !== 'sent'"
             @click="updateStatus('sent')"
-            class="btn btn-primary gap-2"
+            size="sm"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
             </svg>
             Mark as Sent
-          </button>
+          </BlobButton>
 
           <button
             @click="handleDelete"

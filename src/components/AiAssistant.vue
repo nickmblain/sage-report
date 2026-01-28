@@ -1,7 +1,48 @@
 <script setup lang="ts">
-import { ref, nextTick } from 'vue'
+import { ref, nextTick, onMounted, onUnmounted, computed } from 'vue'
 
 const isOpen = ref(false)
+
+// Mouse tracking for blob effect
+const mouseX = ref(0)
+const mouseY = ref(0)
+const buttonRef = ref<HTMLElement | null>(null)
+
+function handleGlobalMouseMove(e: MouseEvent) {
+  if (!buttonRef.value || isOpen.value) return
+
+  const rect = buttonRef.value.getBoundingClientRect()
+  const centerX = rect.left + rect.width / 2
+  const centerY = rect.top + rect.height / 2
+
+  // Calculate normalized direction from center to mouse (-1 to 1)
+  const dx = (e.clientX - centerX) / window.innerWidth
+  const dy = (e.clientY - centerY) / window.innerHeight
+
+  // Amplify the effect but clamp it
+  mouseX.value = Math.max(-1, Math.min(1, dx * 4))
+  mouseY.value = Math.max(-1, Math.min(1, dy * 4))
+}
+
+onMounted(() => {
+  window.addEventListener('mousemove', handleGlobalMouseMove)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('mousemove', handleGlobalMouseMove)
+})
+
+// Transform style for blob stretching towards mouse
+const blobTransform = computed(() => {
+  if (isOpen.value) return 'translate(100, 100)'
+
+  const translateX = 100 + mouseX.value * 8
+  const translateY = 100 + mouseY.value * 8
+  const scaleX = 1 + Math.abs(mouseX.value) * 0.1
+  const scaleY = 1 + Math.abs(mouseY.value) * 0.1
+
+  return `translate(${translateX}, ${translateY}) scale(${scaleX}, ${scaleY})`
+})
 const input = ref('')
 const isTyping = ref(false)
 const messages = ref<{ role: 'user' | 'assistant'; content: string }[]>([
@@ -184,6 +225,7 @@ function handleKeydown(e: KeyboardEvent) {
 
     <!-- Floating Action Button with Blob -->
     <button
+      ref="buttonRef"
       @click="isOpen = !isOpen"
       class="group relative w-20 h-20 transition-all duration-300 hover:scale-105"
     >
@@ -196,9 +238,9 @@ function handleKeydown(e: KeyboardEvent) {
       >
         <path
           :fill="isOpen ? '#4a4a4a' : '#177D83'"
-          class="transition-colors duration-300"
+          class="transition-all duration-150 ease-out"
           d="M43.3,-49.4C58.7,-38.6,75.8,-27.5,76.8,-14.6C77.8,-1.7,62.8,12.9,52.3,29.3C41.8,45.8,35.9,64,23.2,72.5C10.5,81,-9,79.6,-23.7,71.5C-38.4,63.4,-48.3,48.5,-51.8,34C-55.3,19.5,-52.4,5.4,-49.8,-8.8C-47.3,-22.9,-45.2,-37.1,-37,-49.3C-28.7,-61.4,-14.4,-71.4,-0.2,-71.2C13.9,-70.9,27.8,-60.3,43.3,-49.4Z"
-          transform="translate(100 100)"
+          :transform="blobTransform"
         />
       </svg>
 

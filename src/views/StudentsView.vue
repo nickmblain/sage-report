@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue'
 import { useReportsStore } from '@/stores/reports'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
+import BlobButton from '@/components/BlobButton.vue'
 
 const reportsStore = useReportsStore()
 
@@ -51,12 +52,12 @@ function addStudent() {
         <h1 class="text-2xl font-bold text-charcoal-800">Students</h1>
         <p class="text-charcoal-500 mt-1">Manage your student roster</p>
       </div>
-      <button @click="showAddModal = true" class="btn btn-primary gap-2">
+      <BlobButton @click="showAddModal = true" size="sm">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
         </svg>
         Add Student
-      </button>
+      </BlobButton>
     </div>
 
     <!-- Search -->
@@ -158,12 +159,12 @@ function addStudent() {
           </div>
 
           <div class="flex items-center justify-end gap-3 pt-4">
-            <button type="button" @click="showAddModal = false" class="btn btn-secondary">
+            <BlobButton type="button" @click="showAddModal = false" variant="secondary" size="sm">
               Cancel
-            </button>
-            <button type="submit" class="btn btn-primary">
+            </BlobButton>
+            <BlobButton type="submit" size="sm">
               Add Student
-            </button>
+            </BlobButton>
           </div>
         </form>
       </div>

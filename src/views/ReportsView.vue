@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue'
 import { useReportsStore } from '@/stores/reports'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
+import BlobLink from '@/components/BlobLink.vue'
 
 const reportsStore = useReportsStore()
 
@@ -54,12 +55,12 @@ function formatDate(date: string) {
         <h1 class="text-2xl font-bold text-charcoal-800">Reports</h1>
         <p class="text-charcoal-500 mt-1">Manage and review student reports</p>
       </div>
-      <router-link to="/reports/new" class="btn btn-primary gap-2">
+      <BlobLink to="/reports/new" size="sm">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
         </svg>
         New Report
-      </router-link>
+      </BlobLink>
     </div>
 
     <!-- Filters -->
@@ -97,9 +98,9 @@ function formatDate(date: string) {
       <p class="text-charcoal-500 mt-1">
         {{ searchQuery || statusFilter !== 'all' ? 'Try adjusting your filters' : 'Create your first report to get started' }}
       </p>
-      <router-link v-if="!searchQuery && statusFilter === 'all'" to="/reports/new" class="btn btn-primary mt-4">
+      <BlobLink v-if="!searchQuery && statusFilter === 'all'" to="/reports/new" class="mt-4" size="sm">
         Create Report
-      </router-link>
+      </BlobLink>
     </div>
 
     <div v-else class="space-y-3">

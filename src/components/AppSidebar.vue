@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
+import BlobLink from '@/components/BlobLink.vue'
 
 defineProps<{
   open: boolean
@@ -45,16 +46,17 @@ function isActive(path: string) {
     :class="open ? 'translate-x-0' : '-translate-x-full'"
   >
     <div class="p-4">
-      <router-link
+      <BlobLink
         to="/reports/new"
-        class="btn btn-primary w-full gap-2"
+        size="sm"
+        class="w-full"
         @click="emit('navigate')"
       >
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
         </svg>
         New Report
-      </router-link>
+      </BlobLink>
     </div>
 
     <nav class="px-2">

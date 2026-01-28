@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
+import BlobButton from '@/components/BlobButton.vue'
 
 const authStore = useAuthStore()
 
@@ -78,9 +79,9 @@ function saveProfile() {
           </div>
 
           <div class="pt-4">
-            <button type="submit" class="btn btn-primary">
+            <BlobButton type="submit" size="sm">
               Save Changes
-            </button>
+            </BlobButton>
           </div>
         </form>
       </div>

@@ -3,6 +3,8 @@ import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useReportsStore } from '@/stores/reports'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
+import BlobButton from '@/components/BlobButton.vue'
+import BlobLink from '@/components/BlobLink.vue'
 
 const router = useRouter()
 const reportsStore = useReportsStore()
@@ -188,13 +190,13 @@ async function handleGenerate() {
 
           <!-- Submit -->
           <div class="flex items-center justify-end gap-3 pt-4 border-t border-charcoal-100">
-            <router-link to="/reports" class="btn btn-secondary">
+            <BlobLink to="/reports" variant="secondary" size="sm">
               Cancel
-            </router-link>
-            <button
+            </BlobLink>
+            <BlobButton
               type="submit"
               :disabled="!canGenerate || reportsStore.generating"
-              class="btn btn-primary gap-2"
+              size="sm"
             >
               <template v-if="reportsStore.generating">
                 <svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
@@ -209,7 +211,7 @@ async function handleGenerate() {
                 </svg>
                 Generate Report
               </template>
-            </button>
+            </BlobButton>
           </div>
         </form>
       </div>
