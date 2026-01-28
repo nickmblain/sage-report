@@ -2,7 +2,7 @@
 
 AI-powered student report generation platform for educators. Built with Vue 3, TypeScript, Tailwind CSS, and Supabase.
 
-**Live Demo:** [https://sagereport.netlify.app](https://sagereport.netlify.app/login)
+**Live Demo:** [https://sagereport.netlify.app](https://sagereport.netlify.app/)
 
 Created by Nick Blain
 
